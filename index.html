@@ -95,7 +95,7 @@ footer strong{color:#d4af37}
 </select>
 
 <label for="date">Preferred Date</label>
-<input id="date" type="date" required>
+<input id="date" type="text" inputmode="numeric" autocomplete="off" placeholder="MM/DD/YYYY" maxlength="10" required>
 
 <label for="location">Pickup / Location</label>
 <input id="location" placeholder="Pickup point, hotel, airport, etc." required>
@@ -135,11 +135,24 @@ document.querySelectorAll(".service[data-service]").forEach(function(card){
   });
 });
 
+document.getElementById("date").addEventListener("input", function(){
+  let v=this.value.replace(/\D/g,"").slice(0,8);
+  if(v.length>4) v=v.slice(0,2)+"/"+v.slice(2,4)+"/"+v.slice(4);
+  else if(v.length>2) v=v.slice(0,2)+"/"+v.slice(2);
+  this.value=v;
+});
+
 document.getElementById("bookingForm").addEventListener("submit", function(e){
   e.preventDefault();
   const name=document.getElementById("name").value;
   const service=document.getElementById("service").value;
-  const date=document.getElementById("date").value;
+  const date=document.getElementById("date").value.trim();
+  const datePattern=/^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+  if(!datePattern.test(date)){
+    alert("Please enter the date as MM/DD/YYYY, for example 10/25/2026.");
+    document.getElementById("date").focus();
+    return;
+  }
   const location=document.getElementById("location").value;
   const details=document.getElementById("details").value;
 
