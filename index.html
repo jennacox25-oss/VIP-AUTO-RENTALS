@@ -15,7 +15,7 @@ header{text-align:center;padding:42px 18px 28px;border-bottom:1px solid #3b321d}
 .tagline{color:#d4af37;font-style:italic;margin-top:10px}
 h2{color:#d4af37;text-align:center;margin:34px 0 18px}
 .services{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.service{background:#151515;border:1px solid #3b321d;border-radius:12px;padding:18px;text-align:center}
+.service{background:#151515;border:1px solid #3b321d;border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:.2s;user-select:none}.service:hover,.service.selected{border-color:#d4af37;background:#211c0c;transform:translateY(-2px);box-shadow:0 0 0 2px rgba(212,175,55,.18)}.service:active{transform:scale(.98)}
 .service h3{color:#d4af37;margin:0 0 7px;font-size:17px}
 .service p{margin:0;color:#ddd;font-size:14px}
 .buttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
@@ -48,17 +48,17 @@ footer strong{color:#d4af37}
 <h2>Our Services</h2>
 <div class="services">
 
-<div class="service"><h3>🚗 Car Rentals</h3><p>Reliable vehicles for your stay in Barbados.</p></div>
-<div class="service"><h3>🚕 Taxi Service</h3><p>Comfortable private transportation when you need it.</p></div>
-<div class="service"><h3>🏝️ Island Tours</h3><p>Explore Barbados with comfortable, personalized transportation.</p></div>
-<div class="service"><h3>💼 Business Tours</h3><p>Professional transportation for meetings, site visits and business activities.</p></div>
-<div class="service"><h3>✈️ Airport Transfers</h3><p>Convenient pickup and drop-off to and from the airport.</p></div>
-<div class="service"><h3>⚓ Seaport Transfers</h3><p>Reliable transportation to and from Barbados seaports.</p></div>
-<div class="service"><h3>🏨 Hotel Transfers</h3><p>Comfortable transportation between hotels, accommodations and destinations.</p></div>
-<div class="service"><h3>🍽️ Restaurant &amp; Business Transfers</h3><p>Transportation to restaurants, offices, meetings and business locations.</p></div>
-<div class="service"><h3>📦 Business Errands</h3><p>Transportation and assistance with business-related errands and deliveries.</p></div>
-<div class="service"><h3>🛍️ Personal Errands</h3><p>Food deliveries, shopping trips and other convenient personal errands.</p></div>
-<div class="service"><h3>🏥 Medical Appointment Transportation</h3><p>Transportation for doctor visits and other non-emergency medical appointments.</p></div>
+<div class="service" data-service="Car Rental"><h3>🚗 Car Rentals</h3><p>Reliable vehicles for your stay in Barbados.</p></div>
+<div class="service" data-service="Taxi Service"><h3>🚕 Taxi Service</h3><p>Comfortable private transportation when you need it.</p></div>
+<div class="service" data-service="Island Tour"><h3>🏝️ Island Tours</h3><p>Explore Barbados with comfortable, personalized transportation.</p></div>
+<div class="service" data-service="Business Tour"><h3>💼 Business Tours</h3><p>Professional transportation for meetings, site visits and business activities.</p></div>
+<div class="service" data-service="Airport Transfer"><h3>✈️ Airport Transfers</h3><p>Convenient pickup and drop-off to and from the airport.</p></div>
+<div class="service" data-service="Seaport Transfer"><h3>⚓ Seaport Transfers</h3><p>Reliable transportation to and from Barbados seaports.</p></div>
+<div class="service" data-service="Hotel Transfer"><h3>🏨 Hotel Transfers</h3><p>Comfortable transportation between hotels, accommodations and destinations.</p></div>
+<div class="service" data-service="Restaurant & Business Transfer"><h3>🍽️ Restaurant &amp; Business Transfers</h3><p>Transportation to restaurants, offices, meetings and business locations.</p></div>
+<div class="service" data-service="Business Errand"><h3>📦 Business Errands</h3><p>Transportation and assistance with business-related errands and deliveries.</p></div>
+<div class="service" data-service="Personal Errand / Food Delivery"><h3>🛍️ Personal Errands</h3><p>Food deliveries, shopping trips and other convenient personal errands.</p></div>
+<div class="service" data-service="Medical Appointment Transportation"><h3>🏥 Medical Appointment Transportation</h3><p>Transportation for doctor visits and other non-emergency medical appointments.</p></div>
 
 </div>
 </section>
@@ -117,6 +117,24 @@ Barbados<br>
 </footer>
 
 <script>
+document.querySelectorAll(".service[data-service]").forEach(function(card){
+  card.addEventListener("click", function(){
+    document.querySelectorAll(".service[data-service]").forEach(function(c){
+      c.classList.remove("selected");
+    });
+    card.classList.add("selected");
+
+    const serviceName = card.getAttribute("data-service");
+    const serviceSelect = document.getElementById("service");
+    serviceSelect.value = serviceName;
+
+    document.getElementById("bookingForm").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+  });
+});
+
 document.getElementById("bookingForm").addEventListener("submit", function(e){
   e.preventDefault();
   const name=document.getElementById("name").value;
